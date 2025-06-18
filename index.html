@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sonoran Stillness</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -11,7 +11,7 @@
     <pre class="scroll-text" id="blessingText">
       <!-- Blessing will be injected here -->
     </pre>
-    <button onclick="beginApp()" class="enter-button">⫷ Enter Stillness ⫸</button>
+    <button type="button" onclick="beginApp()" class="enter-button">⫷ Enter Stillness ⫸</button>
   </div>
 
   <div id="mainApp" class="hidden">
@@ -23,15 +23,15 @@
     <section id="focusGame" class="game-section">
       <h2>🧘 Focus Tracker</h2>
       <p>Close your eyes. Breathe. Open them when you're ready. Then click "I stayed focused."</p>
-      <button onclick="trackFocus()">I stayed focused</button>
+      <button type="button" onclick="trackFocus()">I stayed focused</button>
       <p id="focusCount">Focus streak: 0</p>
     </section>
 
     <section id="gratitudeGame" class="game-section">
-      <h2🙏 Gratitude Reflection</h2>
+      <h2>🙏 Gratitude Reflection</h2>
       <p>Write one thing you're grateful for:</p>
       <input type="text" id="gratitudeInput" placeholder="e.g. Clean water" />
-      <button onclick="submitGratitude()">Submit</button>
+      <button type="button" onclick="submitGratitude()">Submit</button>
       <p id="gratitudeResponse"></p>
     </section>
 
@@ -40,17 +40,17 @@
       <p>Type the calming word exactly as shown:</p>
       <p id="meditationWord">serenity</p>
       <input type="text" id="wordInput" placeholder="Type here..." />
-      <button onclick="checkWord()">Check</button>
+      <button type="button" onclick="checkWord()">Check</button>
       <p id="wordResult"></p>
     </section>
 
     <section id="breathGame" class="game-section">
       <h2>🌬️ Guided Breathing</h2>
-      <button onclick="startBreathing()">Start 3 Breaths</button>
+      <button type="button" onclick="startBreathing()">Start 3 Breaths</button>
       <p id="breathText"></p>
     </section>
   </div>
 
-  <script src="app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
