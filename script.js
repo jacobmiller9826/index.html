@@ -1,117 +1,146 @@
-// Interfaith rotating blessings
+let currentMood = "";
+let finalIntention = "";
+let audioCtx;
+let droneOsc, droneGain;
+let chimeOscs = [];
+let chimeGains = [];
+let windOsc, windGain;
+
+const stories = {
+  Calm: "A cactus blooms unseen in the dry heat, needing no witness to be complete.",
+  Clarity: "The hawk glides above the desert — it does not chase, it simply sees.",
+  Healing: "The cracked earth softens after a single unexpected rain. Healing can be slow but sure.",
+  Strength: "The mesquite roots run deep. No one sees their struggle, but still they hold firm.",
+  Grief: "Even the tallest saguaro loses arms to time. Yet it stands.",
+  Gratitude: "The sun does not ask for thanks. It rises anyway."
+};
+
 const blessings = [
-  { text: "May your soul bloom even in drought.", source: "[Christian Desert Fathers]" },
-  { text: "Even in stillness, Allah listens.", source: "[Islamic]" },
-  { text: "The coyote crosses paths with care — so should you.", source: "[Indigenous - Tohono O’odham]" },
-  { text: "Breathe. You are already walking in the garden.", source: "[Jewish Mysticism]" },
-  { text: "Let the heat melt away illusion, not your spirit.", source: "[Buddhist]" },
-  { text: "The light of the Creator hides in the rocks and roots.", source: "[Bahá’í]" },
-  { text: "In the desert, we remember the Source of all things.", source: "[Christian - Monastic]" },
-  { text: "There is no separation — the wind touches all faiths.", source: "[Universalist]" },
-  { text: "Peace flows deeper than water.", source: "[Quaker]" },
-  { text: "The desert does not judge. It reveals.", source: "[Spiritual But Not Religious]" },
-  { text: "May your steps echo with purpose on sacred land.", source: "[Hopi]" },
-  { text: "Walk lightly. The ancestors walk with you.", source: "[Navajo]" }
+  "May your soul bloom even in drought. [Desert Christian]",
+  "Peace flows deeper than water. [Quaker]",
+  "Allah sees all tears not cried. [Islamic]",
+  "The desert listens. So does Spirit. [Spiritual]",
+  "Your ancestors walk with you. [Navajo Wisdom]",
+  "Let the stillness hold you. [Zen]"
 ];
 
-// Variables to hold state
-let focusStreak = 0;
-const meditationWords = ["serenity", "patience", "desert", "peaceful", "focus"];
-
-function trackFocus() {
-  focusStreak++;
-  document.getElementById("focusCount").innerText = `Focus streak: ${focusStreak}`;
+function selectMood(mood) {
+  currentMood = mood;
+  switchScreen(1, 2);
 }
 
-function submitGratitude() {
-  const input = document.getElementById("gratitudeInput").value.trim();
-  const response = input
-    ? `Beautiful. "${input}" is worth remembering.`
-    : "Try adding something you're thankful for.";
-  document.getElementById("gratitudeResponse").innerText = response;
-  if(input) document.getElementById("gratitudeInput").value = "";
+function continueToStory() {
+  const reflection = document.getElementById("reflectionInput").value;
+  document.getElementById("storyText").innerText = stories[currentMood];
+  switchScreen(2, 3);
 }
 
-function checkWord() {
-  const input = document.getElementById("wordInput").value.trim().toLowerCase();
-  const target = document.getElementById("meditationWord").innerText.toLowerCase();
-  const result = input === target ? "Well done. Let the word sink in." : "Try again. Slow and steady.";
-  document.getElementById("wordResult").innerText = result;
-  if(input === target) document.getElementById("wordInput").value = "";
+function startBreath() {
+  switchScreen(3, 4);
+  startAmbientSound();
+  setTimeout(() => {
+    stopAmbientSound();
+    switchScreen(4, 5);
+  }, 10000); // 10 seconds breath meditation
 }
 
-function startBreathing() {
-  const breathText = document.getElementById("breathText");
-  const steps = ["Inhale... 🌬️", "Hold...", "Exhale... 😌"];
-  let round = 0;
-  breathText.innerText = "";
-  let interval = setInterval(() => {
-    breathText.innerText = steps[round % steps.length];
-    round++;
-    if (round === 9) {
-      clearInterval(interval);
-      breathText.innerText = "Complete. You may rest here.";
-    }
-  }, 2000);
+function chooseIntention(intention) {
+  finalIntention = intention;
+  const blessing = blessings[Math.floor(Math.random() * blessings.length)];
+  document.getElementById("finalBlessing").innerText = blessing;
+  switchScreen(5, 6);
 }
 
-// Function to build the full app HTML and inject it inside #container
-function buildApp() {
-  const container = document.getElementById("container");
-
-  // Pick a random blessing
-  const randomBlessing = blessings[Math.floor(Math.random() * blessings.length)];
-
-  container.classList.remove("landing-container");
-  container.classList.add("main-app");
-
-  container.innerHTML = `
-    <header>
-      <h1>Sonoran Stillness: A Desert Brain Game</h1>
-      <p><em>"${randomBlessing.text}"</em><br/><strong>${randomBlessing.source}</strong></p>
-      <p>Welcome. Let us begin our calming journey.</p>
-    </header>
-
-    <section id="focusGame" class="game-section">
-      <h2>🧘 Focus Tracker</h2>
-      <p>Close your eyes. Breathe. Open them when you're ready. Then click "I stayed focused."</p>
-      <button type="button" id="focusBtn">I stayed focused</button>
-      <p id="focusCount">Focus streak: 0</p>
-    </section>
-
-    <section id="gratitudeGame" class="game-section">
-      <h2>🙏 Gratitude Reflection</h2>
-      <p>Write one thing you're grateful for:</p>
-      <input type="text" id="gratitudeInput" placeholder="e.g. Clean water" />
-      <button type="button" id="gratitudeBtn">Submit</button>
-      <p id="gratitudeResponse"></p>
-    </section>
-
-    <section id="wordGame" class="game-section">
-      <h2>🌵 Desert Word Meditation</h2>
-      <p>Type the calming word exactly as shown:</p>
-      <p id="meditationWord">${meditationWords[Math.floor(Math.random() * meditationWords.length)]}</p>
-      <input type="text" id="wordInput" placeholder="Type here..." />
-      <button type="button" id="wordBtn">Check</button>
-      <p id="wordResult"></p>
-    </section>
-
-    <section id="breathGame" class="game-section">
-      <h2>🌬️ Guided Breathing</h2>
-      <button type="button" id="breathBtn">Start 3 Breaths</button>
-      <p id="breathText"></p>
-    </section>
-  `;
-
-  // Add event listeners after injecting the HTML
-  document.getElementById("focusBtn").addEventListener("click", trackFocus);
-  document.getElementById("gratitudeBtn").addEventListener("click", submitGratitude);
-  document.getElementById("wordBtn").addEventListener("click", checkWord);
-  document.getElementById("breathBtn").addEventListener("click", startBreathing);
+function switchScreen(from, to) {
+  document.getElementById(`screen${from}`).classList.remove("active");
+  document.getElementById(`screen${to}`).classList.add("active");
 }
 
-// Set up start button
-document.addEventListener("DOMContentLoaded", () => {
-  const startBtn = document.getElementById("startBtn");
-  startBtn.addEventListener("click", buildApp);
-});
+// --- Web Audio API Ambient Sound Generators ---
+
+function startAmbientSound() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  // === Drone ===
+  droneOsc = audioCtx.createOscillator();
+  droneGain = audioCtx.createGain();
+
+  droneOsc.type = 'sine';
+  droneOsc.frequency.setValueAtTime(174, audioCtx.currentTime); // Calm solfeggio tone
+  droneGain.gain.setValueAtTime(0, audioCtx.currentTime);
+  droneGain.gain.linearRampToValueAtTime(0.02, audioCtx.currentTime + 5); // fade in 5s
+
+  droneOsc.connect(droneGain).connect(audioCtx.destination);
+  droneOsc.start();
+
+  // === Chimes (3 oscillators with different frequencies and timing) ===
+  const chimeFreqs = [523.25, 659.25, 783.99]; // C5, E5, G5 notes
+  chimeOscs = [];
+  chimeGains = [];
+
+  chimeFreqs.forEach((freq, i) => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0, audioCtx.currentTime);
+
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start();
+
+    // Schedule chimes with staggered fade in/out
+    gain.gain.setValueAtTime(0, audioCtx.currentTime + i * 2);
+    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + i * 2 + 1);
+    gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + i * 2 + 2);
+
+    chimeOscs.push(osc);
+    chimeGains.push(gain);
+  });
+
+  // === Wind (noise using oscillator frequency modulation) ===
+  windOsc = audioCtx.createOscillator();
+  windGain = audioCtx.createGain();
+
+  windOsc.type = 'white'; // white noise is not a valid oscillator type so we do a trick below
+  // Instead, create noise using script processor
+  const bufferSize = 2 * audioCtx.sampleRate;
+  const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  let output = noiseBuffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    output[i] = Math.random() * 2 - 1;
+  }
+
+  const whiteNoise = audioCtx.createBufferSource();
+  whiteNoise.buffer = noiseBuffer;
+  whiteNoise.loop = true;
+
+  windGain.gain.setValueAtTime(0, audioCtx.currentTime);
+  windGain.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 3);
+
+  whiteNoise.connect(windGain).connect(audioCtx.destination);
+  whiteNoise.start();
+
+  // Save whiteNoise for stopping later
+  windOsc = whiteNoise;
+  windGain = windGain;
+}
+
+function stopAmbientSound() {
+  if (droneGain) {
+    droneGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 3); // fade out 3s
+    droneOsc.stop(audioCtx.currentTime + 3);
+  }
+  if (chimeGains.length) {
+    chimeGains.forEach((gain, i) => {
+      gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1 + i);
+      chimeOscs[i].stop(audioCtx.currentTime + 1 + i);
+    });
+  }
+  if (windGain) {
+    windGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 3);
+    windOsc.stop(audioCtx.currentTime + 3);
+  }
+}
