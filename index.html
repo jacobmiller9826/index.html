@@ -7,49 +7,52 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- 🌄 Animated Desert Sunrise -->
-  <div class="sunrise">
-    <div class="sun"></div>
-  </div>
-
-  <main id="app">
-    <section id="welcome" class="section">
+  <div id="app">
+    <section id="screen1" class="screen active">
       <h1 class="glow">Sonoran Stillness</h1>
-      <p class="glow">You have entered the Sonoran Stillness.</p>
-      <p>Why are you here today?</p>
+      <p>Welcome, traveler. Breathe deeply. Let one word guide your path.</p>
       <div class="choices">
-        <button onclick="beginStory('Calm')">Calm</button>
-        <button onclick="beginStory('Gratitude')">Gratitude</button>
-        <button onclick="beginStory('Clarity')">Clarity</button>
-        <button onclick="beginStory('Strength')">Strength</button>
+        <button onclick="selectMood('Calm')">Calm</button>
+        <button onclick="selectMood('Clarity')">Clarity</button>
+        <button onclick="selectMood('Healing')">Healing</button>
+        <button onclick="selectMood('Strength')">Strength</button>
+        <button onclick="selectMood('Grief')">Grief</button>
+        <button onclick="selectMood('Gratitude')">Gratitude</button>
       </div>
     </section>
 
-    <section id="story" class="section hidden">
+    <section id="screen2" class="screen">
+      <p>Where in your life are you feeling called to change?</p>
+      <textarea id="reflectionInput" rows="4" placeholder="Write freely..."></textarea>
+      <button onclick="continueToStory()">Continue</button>
+    </section>
+
+    <section id="screen3" class="screen">
       <p id="storyText"></p>
-      <button onclick="showReflection()">Next</button>
+      <button onclick="startBreath()">Begin Breath</button>
     </section>
 
-    <section id="reflection" class="section hidden">
-      <p id="reflectionPrompt"></p>
-      <button onclick="startBreathing()">Begin Breathing</button>
+    <section id="screen4" class="screen">
+      <p id="breathText">Inhale...</p>
     </section>
 
-    <section id="breathing" class="section hidden">
-      <p id="breathText">Prepare to breathe...</p>
+    <section id="screen5" class="screen">
+      <p>What will you carry back with you?</p>
+      <div class="choices">
+        <button onclick="chooseIntention('Forgiveness')">Forgiveness</button>
+        <button onclick="chooseIntention('Quiet')">Quiet</button>
+        <button onclick="chooseIntention('Courage')">Courage</button>
+        <button onclick="chooseIntention('Hope')">Hope</button>
+        <button onclick="chooseIntention('Lightness')">Lightness</button>
+      </div>
     </section>
 
-    <section id="action" class="section hidden">
-      <p id="actionPrompt"></p>
-      <button onclick="showBlessing()">Receive Blessing</button>
+    <section id="screen6" class="screen">
+      <p id="finalBlessing" class="glow"></p>
+      <p class="flame"></p>
+      <p>May your path be softened by stillness.</p>
     </section>
-
-    <section id="blessing" class="section hidden">
-      <p id="blessingText"></p>
-      <p>May your journey continue with peace.</p>
-    </section>
-  </main>
-
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
