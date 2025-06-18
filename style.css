@@ -1,4 +1,3 @@
-/* Base styles (mobile-first) */
 
 body {
   font-family: 'Georgia', serif;
@@ -11,30 +10,64 @@ body {
   font-size: 1rem;
 }
 
-header {
-  padding: 1.5em 1em;
-  background-color: #f0e8d5;
-  border-bottom: 1px solid #cbbfa6;
-}
-
 h1 {
-  font-size: 1.6rem;
+  font-size: 2rem;
   margin-bottom: 0.3em;
+  margin-top: 1em;
 }
 
-h2 {
-  font-size: 1.3rem;
-  margin-bottom: 0.5em;
+.landing-message {
+  font-size: 1.1rem;
+  margin: 1em auto 2em auto;
+  max-width: 90%;
+  max-width: 450px;
+  color: #5c4a36;
 }
 
-.game-section {
-  margin: 1.5em auto;
-  max-width: 100%;
-  padding: 1em;
+button {
+  padding: 0.8em 1.8em;
+  border: none;
+  background-color: #d6d2c4;
+  color: #3a2e1d;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background 0.3s;
+  min-width: 180px;
+}
+
+button:hover,
+button:focus {
+  background-color: #e9e6dc;
+  outline: none;
+}
+
+/* After starting, container gets padding and styles for main app */
+.main-app {
+  max-width: 600px;
+  margin: 1em auto 3em auto;
   background: #fffef9;
   border: 1px solid #dcd2b2;
   border-radius: 8px;
+  padding: 1em 1.5em 2em 1.5em;
   box-sizing: border-box;
+  text-align: center;
+}
+
+header {
+  padding-bottom: 1em;
+  border-bottom: 1px solid #cbbfa6;
+  margin-bottom: 1em;
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5em;
+  margin-top: 1.5em;
+}
+
+.game-section {
+  margin-bottom: 1.5em;
 }
 
 input {
@@ -48,90 +81,13 @@ input {
   box-sizing: border-box;
 }
 
-button {
-  padding: 0.8em 1.5em;
-  margin-top: 1em;
-  border: none;
-  background-color: #d6d2c4;
-  color: #3a2e1d;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: background 0.3s;
-  min-width: 150px;
-}
-
-button:hover,
-button:focus {
-  background-color: #e9e6dc;
-  outline: none;
-}
-
-.hidden {
-  display: none;
-}
-
-/* Intro Scroll Style */
-.intro-scroll {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #fdf6e3;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  padding: 1.5em;
-  box-sizing: border-box;
-  animation: fadeIn 4s ease-in-out;
-  text-align: center;
-}
-
-.scroll-text {
-  font-size: 1rem;
-  font-style: italic;
-  color: #5c4a36;
-  padding: 1.5em;
-  border: 2px dashed #c0b093;
-  background: #fffdf9;
-  border-radius: 12px;
-  max-width: 100%;
-  max-height: 50vh;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  margin-bottom: 1.5em;
-  box-sizing: border-box;
-}
-
-.enter-button {
-  background: #d6d2c4;
-  color: #3a2e1d;
-  font-size: 1.2rem;
-  padding: 0.8em 2em;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-  min-width: 200px;
-}
-
-.enter-button:hover,
-.enter-button:focus {
-  background: #e9e6dc;
-  outline: none;
-}
-
-/* Breathing text bigger */
 #breathText {
   font-size: 1.3rem;
   margin-top: 1em;
   font-weight: 600;
 }
 
-/* Responsive Typography for larger screens */
-
+/* Responsive typography */
 @media screen and (min-width: 600px) {
   body {
     font-size: 1.1rem;
@@ -139,11 +95,11 @@ button:focus {
   }
 
   h1 {
-    font-size: 2.2rem;
+    font-size: 2.6rem;
   }
 
   h2 {
-    font-size: 1.6rem;
+    font-size: 1.7rem;
   }
 
   input {
@@ -152,27 +108,7 @@ button:focus {
   }
 
   button {
-    font-size: 1.2rem;
-    min-width: 180px;
-  }
-
-  .game-section {
-    max-width: 500px;
-  }
-
-  .scroll-text {
-    font-size: 1.1rem;
-    max-width: 600px;
-  }
-
-  .enter-button {
     font-size: 1.3rem;
-    min-width: 220px;
+    min-width: 200px;
   }
-}
-
-/* Fade In Animation */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
