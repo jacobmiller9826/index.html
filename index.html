@@ -7,49 +7,13 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="intro" class="intro-scroll">
-    <pre class="scroll-text" id="blessingText">
-      <!-- Blessing will be injected here -->
-    </pre>
-    <button type="button" onclick="beginApp()" class="enter-button">⫷ Enter Stillness ⫸</button>
-  </div>
-
-  <div id="mainApp" class="hidden">
-    <header>
-      <h1>Sonoran Stillness: A Desert Brain Game</h1>
-      <p>Welcome. Let us begin our calming journey.</p>
-    </header>
-
-    <section id="focusGame" class="game-section">
-      <h2>🧘 Focus Tracker</h2>
-      <p>Close your eyes. Breathe. Open them when you're ready. Then click "I stayed focused."</p>
-      <button type="button" onclick="trackFocus()">I stayed focused</button>
-      <p id="focusCount">Focus streak: 0</p>
-    </section>
-
-    <section id="gratitudeGame" class="game-section">
-      <h2>🙏 Gratitude Reflection</h2>
-      <p>Write one thing you're grateful for:</p>
-      <input type="text" id="gratitudeInput" placeholder="e.g. Clean water" />
-      <button type="button" onclick="submitGratitude()">Submit</button>
-      <p id="gratitudeResponse"></p>
-    </section>
-
-    <section id="wordGame" class="game-section">
-      <h2>🌵 Desert Word Meditation</h2>
-      <p>Type the calming word exactly as shown:</p>
-      <p id="meditationWord">serenity</p>
-      <input type="text" id="wordInput" placeholder="Type here..." />
-      <button type="button" onclick="checkWord()">Check</button>
-      <p id="wordResult"></p>
-    </section>
-
-    <section id="breathGame" class="game-section">
-      <h2>🌬️ Guided Breathing</h2>
-      <button type="button" onclick="startBreathing()">Start 3 Breaths</button>
-      <p id="breathText"></p>
-    </section>
-  </div>
+  <main id="container" class="landing-container">
+    <h1>Sonoran Stillness</h1>
+    <p class="landing-message">
+      Welcome to the Sonoran Desert calm — a gentle mental health brain game to help you find peace during the summer heat.
+    </p>
+    <button id="startBtn" type="button">Begin Your Journey</button>
+  </main>
 
   <script src="script.js"></script>
 </body>
