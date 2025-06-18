@@ -7,12 +7,47 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main id="container" class="landing-container">
-    <h1>Sonoran Stillness</h1>
-    <p class="landing-message">
-      Welcome to the Sonoran Desert calm — a gentle mental health brain game to help you find peace during the summer heat.
-    </p>
-    <button id="startBtn" type="button">Begin Your Journey</button>
+  <!-- 🌄 Animated Desert Sunrise -->
+  <div class="sunrise">
+    <div class="sun"></div>
+  </div>
+
+  <main id="app">
+    <section id="welcome" class="section">
+      <h1 class="glow">Sonoran Stillness</h1>
+      <p class="glow">You have entered the Sonoran Stillness.</p>
+      <p>Why are you here today?</p>
+      <div class="choices">
+        <button onclick="beginStory('Calm')">Calm</button>
+        <button onclick="beginStory('Gratitude')">Gratitude</button>
+        <button onclick="beginStory('Clarity')">Clarity</button>
+        <button onclick="beginStory('Strength')">Strength</button>
+      </div>
+    </section>
+
+    <section id="story" class="section hidden">
+      <p id="storyText"></p>
+      <button onclick="showReflection()">Next</button>
+    </section>
+
+    <section id="reflection" class="section hidden">
+      <p id="reflectionPrompt"></p>
+      <button onclick="startBreathing()">Begin Breathing</button>
+    </section>
+
+    <section id="breathing" class="section hidden">
+      <p id="breathText">Prepare to breathe...</p>
+    </section>
+
+    <section id="action" class="section hidden">
+      <p id="actionPrompt"></p>
+      <button onclick="showBlessing()">Receive Blessing</button>
+    </section>
+
+    <section id="blessing" class="section hidden">
+      <p id="blessingText"></p>
+      <p>May your journey continue with peace.</p>
+    </section>
   </main>
 
   <script src="script.js"></script>
