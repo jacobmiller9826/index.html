@@ -4,7 +4,7 @@ let audioCtx;
 let droneOsc, droneGain;
 let chimeOscs = [];
 let chimeGains = [];
-let windOsc, windGain;
+let windNoiseSource, windGain;
 
 const stories = {
   Calm: "A cactus blooms unseen in the dry heat, needing no witness to be complete.",
@@ -26,21 +26,21 @@ const blessings = [
 
 function selectMood(mood) {
   currentMood = mood;
-  switchScreen(1, 2);
+  scrollToSection('screen2');
 }
 
 function continueToStory() {
   const reflection = document.getElementById("reflectionInput").value;
   document.getElementById("storyText").innerText = stories[currentMood];
-  switchScreen(2, 3);
+  scrollToSection('screen3');
 }
 
 function startBreath() {
-  switchScreen(3, 4);
+  scrollToSection('screen4');
   startAmbientSound();
   setTimeout(() => {
     stopAmbientSound();
-    switchScreen(4, 5);
+    scrollToSection('screen5');
   }, 10000); // 10 seconds breath meditation
 }
 
@@ -48,12 +48,11 @@ function chooseIntention(intention) {
   finalIntention = intention;
   const blessing = blessings[Math.floor(Math.random() * blessings.length)];
   document.getElementById("finalBlessing").innerText = blessing;
-  switchScreen(5, 6);
+  scrollToSection('screen6');
 }
 
-function switchScreen(from, to) {
-  document.getElementById(`screen${from}`).classList.remove("active");
-  document.getElementById(`screen${to}`).classList.add("active");
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
 }
 
 // --- Web Audio API Ambient Sound Generators ---
@@ -100,32 +99,24 @@ function startAmbientSound() {
     chimeGains.push(gain);
   });
 
-  // === Wind (noise using oscillator frequency modulation) ===
-  windOsc = audioCtx.createOscillator();
-  windGain = audioCtx.createGain();
-
-  windOsc.type = 'white'; // white noise is not a valid oscillator type so we do a trick below
-  // Instead, create noise using script processor
+  // === Wind (noise using buffer source) ===
   const bufferSize = 2 * audioCtx.sampleRate;
   const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-  let output = noiseBuffer.getChannelData(0);
+  const output = noiseBuffer.getChannelData(0);
   for (let i = 0; i < bufferSize; i++) {
     output[i] = Math.random() * 2 - 1;
   }
 
-  const whiteNoise = audioCtx.createBufferSource();
-  whiteNoise.buffer = noiseBuffer;
-  whiteNoise.loop = true;
+  windNoiseSource = audioCtx.createBufferSource();
+  windNoiseSource.buffer = noiseBuffer;
+  windNoiseSource.loop = true;
 
+  windGain = audioCtx.createGain();
   windGain.gain.setValueAtTime(0, audioCtx.currentTime);
   windGain.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 3);
 
-  whiteNoise.connect(windGain).connect(audioCtx.destination);
-  whiteNoise.start();
-
-  // Save whiteNoise for stopping later
-  windOsc = whiteNoise;
-  windGain = windGain;
+  windNoiseSource.connect(windGain).connect(audioCtx.destination);
+  windNoiseSource.start();
 }
 
 function stopAmbientSound() {
@@ -141,6 +132,6 @@ function stopAmbientSound() {
   }
   if (windGain) {
     windGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 3);
-    windOsc.stop(audioCtx.currentTime + 3);
+    windNoiseSource.stop(audioCtx.currentTime + 3);
   }
 }
