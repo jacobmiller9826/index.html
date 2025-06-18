@@ -1,123 +1,80 @@
-/* Base Layout */
-body {
-  font-family: 'Georgia', serif;
-  background-color: #fdf6e3;
-  color: #3a2e1d;
+body, html {
   margin: 0;
-  padding: 1em;
+  padding: 0;
+  font-family: 'Georgia', serif;
+  background: linear-gradient(to bottom, #fdf6e3, #c69c6d);
+  color: #3a2e1d;
+  height: 100%;
+  overflow: hidden;
+}
+
+#app {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  overflow-x: hidden;
 }
 
-h1 {
-  font-size: 2rem;
-  margin-top: 1em;
-}
-
-.section {
-  margin: 2em auto;
-  max-width: 600px;
-  opacity: 1;
+.screen {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 2rem;
   transition: opacity 1s ease-in-out;
 }
 
-.hidden {
-  display: none;
+.screen.active {
+  display: flex;
 }
 
-/* Buttons */
-.choices button,
-button {
-  padding: 0.8em 1.2em;
+.glow {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(255, 213, 128, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 213, 128, 1);
+  }
+}
+
+.choices button {
   margin: 0.5em;
-  background-color: #d6d2c4;
+  padding: 1em 1.5em;
+  font-size: 1.1rem;
   border: none;
-  border-radius: 6px;
-  font-size: 1rem;
+  border-radius: 8px;
+  background-color: #e6d3b3;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
-button:hover {
-  background-color: #e9e6dc;
+.choices button:hover {
+  background-color: #f7e6c8;
 }
 
-/* 🌄 Sunrise Animation */
-.sunrise {
-  width: 100%;
-  height: 200px;
-  background: linear-gradient(to top, #c69c6d, #fdf6e3);
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 2em;
+textarea {
+  width: 90%;
+  max-width: 500px;
+  margin-top: 1em;
+  padding: 1em;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: 'Georgia', serif;
 }
 
-.sun {
-  width: 80px;
-  height: 80px;
-  background: #fcd97d;
-  border-radius: 50%;
-  position: absolute;
-  bottom: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: rise 8s ease-in-out infinite alternate;
-}
-
-@keyframes rise {
-  0% {
-    bottom: -40px;
-    background-color: #fcd97d;
-  }
-  100% {
-    bottom: 80px;
-    background-color: #ffe9a1;
-  }
-}
-
-/* ✨ Glowing Text */
-.glow {
-  animation: pulse 3s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    text-shadow: 0 0 8px rgba(255, 215, 160, 0.4);
-  }
-  50% {
-    text-shadow: 0 0 15px rgba(255, 215, 160, 0.9);
-  }
-}
-
-/* 💫 Falling Stars */
-body::before {
-  content: '';
-  position: fixed;
-  top: -50px;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background: repeating-radial-gradient(#ffffff55, #ffffff00 2px);
-  animation: stars 30s linear infinite;
-  z-index: -1;
-}
-
-@keyframes stars {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 0 1000px;
-  }
-}
-
-/* 🔥 Candle Flame on Blessing */
-#blessingText::after {
-  content: '';
-  display: block;
+.flame {
   width: 8px;
   height: 20px;
-  margin: 10px auto;
+  margin: 20px auto;
   background: radial-gradient(circle, #ff9e42 0%, #ff5e00 80%, transparent 100%);
   border-radius: 50%;
   animation: flicker 0.5s infinite alternate ease-in-out;
@@ -126,19 +83,18 @@ body::before {
 @keyframes flicker {
   0% {
     transform: scaleY(1) translateY(0);
-    opacity: 0.9;
+    opacity: 0.8;
   }
   100% {
-    transform: scaleY(1.2) translateY(-2px);
+    transform: scaleY(1.3) translateY(-2px);
     opacity: 1;
   }
 }
 
-/* 💨 Breathing Text Fade */
 #breathText {
-  font-size: 1.3rem;
+  font-size: 2rem;
   font-weight: bold;
-  opacity: 0;
+  opacity: 1;
   animation: fadeBreath 2s ease-in-out infinite;
 }
 
