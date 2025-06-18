@@ -14,37 +14,24 @@ const blessings = [
   { text: "Walk lightly. The ancestors walk with you.", source: "[Navajo]" }
 ];
 
-document.addEventListener("DOMContentLoaded", () => {
-  const randomBlessing = blessings[Math.floor(Math.random() * blessings.length)];
-  document.getElementById("blessingText").innerText = `"${randomBlessing.text}"\n\n${randomBlessing.source}`;
-});
-
-// Make beginApp global so onclick works
-window.beginApp = function() {
-  console.log("Begin button clicked");
-  document.getElementById("intro").classList.add("hidden");
-  document.getElementById("mainApp").classList.remove("hidden");
-};
-
-// Focus Game
+// Variables to hold state
 let focusStreak = 0;
+const meditationWords = ["serenity", "patience", "desert", "peaceful", "focus"];
+
 function trackFocus() {
   focusStreak++;
   document.getElementById("focusCount").innerText = `Focus streak: ${focusStreak}`;
 }
 
-// Gratitude Game
 function submitGratitude() {
   const input = document.getElementById("gratitudeInput").value.trim();
   const response = input
     ? `Beautiful. "${input}" is worth remembering.`
     : "Try adding something you're thankful for.";
   document.getElementById("gratitudeResponse").innerText = response;
-  if(input) document.getElementById("gratitudeInput").value = ""; // Clear input after submission
+  if(input) document.getElementById("gratitudeInput").value = "";
 }
 
-// Word Meditation
-const meditationWords = ["serenity", "patience", "desert", "peaceful", "focus"];
 function checkWord() {
   const input = document.getElementById("wordInput").value.trim().toLowerCase();
   const target = document.getElementById("meditationWord").innerText.toLowerCase();
@@ -53,7 +40,6 @@ function checkWord() {
   if(input === target) document.getElementById("wordInput").value = "";
 }
 
-// Guided Breathing
 function startBreathing() {
   const breathText = document.getElementById("breathText");
   const steps = ["Inhale... 🌬️", "Hold...", "Exhale... 😌"];
@@ -68,3 +54,64 @@ function startBreathing() {
     }
   }, 2000);
 }
+
+// Function to build the full app HTML and inject it inside #container
+function buildApp() {
+  const container = document.getElementById("container");
+
+  // Pick a random blessing
+  const randomBlessing = blessings[Math.floor(Math.random() * blessings.length)];
+
+  container.classList.remove("landing-container");
+  container.classList.add("main-app");
+
+  container.innerHTML = `
+    <header>
+      <h1>Sonoran Stillness: A Desert Brain Game</h1>
+      <p><em>"${randomBlessing.text}"</em><br/><strong>${randomBlessing.source}</strong></p>
+      <p>Welcome. Let us begin our calming journey.</p>
+    </header>
+
+    <section id="focusGame" class="game-section">
+      <h2>🧘 Focus Tracker</h2>
+      <p>Close your eyes. Breathe. Open them when you're ready. Then click "I stayed focused."</p>
+      <button type="button" id="focusBtn">I stayed focused</button>
+      <p id="focusCount">Focus streak: 0</p>
+    </section>
+
+    <section id="gratitudeGame" class="game-section">
+      <h2>🙏 Gratitude Reflection</h2>
+      <p>Write one thing you're grateful for:</p>
+      <input type="text" id="gratitudeInput" placeholder="e.g. Clean water" />
+      <button type="button" id="gratitudeBtn">Submit</button>
+      <p id="gratitudeResponse"></p>
+    </section>
+
+    <section id="wordGame" class="game-section">
+      <h2>🌵 Desert Word Meditation</h2>
+      <p>Type the calming word exactly as shown:</p>
+      <p id="meditationWord">${meditationWords[Math.floor(Math.random() * meditationWords.length)]}</p>
+      <input type="text" id="wordInput" placeholder="Type here..." />
+      <button type="button" id="wordBtn">Check</button>
+      <p id="wordResult"></p>
+    </section>
+
+    <section id="breathGame" class="game-section">
+      <h2>🌬️ Guided Breathing</h2>
+      <button type="button" id="breathBtn">Start 3 Breaths</button>
+      <p id="breathText"></p>
+    </section>
+  `;
+
+  // Add event listeners after injecting the HTML
+  document.getElementById("focusBtn").addEventListener("click", trackFocus);
+  document.getElementById("gratitudeBtn").addEventListener("click", submitGratitude);
+  document.getElementById("wordBtn").addEventListener("click", checkWord);
+  document.getElementById("breathBtn").addEventListener("click", startBreathing);
+}
+
+// Set up start button
+document.addEventListener("DOMContentLoaded", () => {
+  const startBtn = document.getElementById("startBtn");
+  startBtn.addEventListener("click", buildApp);
+});
