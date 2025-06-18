@@ -1,0 +1,102 @@
+body {
+  font-family: 'Georgia', serif;
+  background-color: #fdf6e3;
+  color: #3a2e1d;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+header {
+  padding: 2em 1em;
+  background-color: #f0e8d5;
+  border-bottom: 1px solid #cbbfa6;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 0.2em;
+}
+
+.game-section {
+  margin: 2em auto;
+  max-width: 500px;
+  padding: 1em;
+  background: #fffef9;
+  border: 1px solid #dcd2b2;
+  border-radius: 8px;
+}
+
+input {
+  padding: 0.5em;
+  width: 80%;
+  margin-top: 0.5em;
+}
+
+button {
+  padding: 0.6em 1.2em;
+  margin-top: 0.8em;
+  border: none;
+  background-color: #d6d2c4;
+  color: #3a2e1d;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #e9e6dc;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Intro Scroll Style */
+.intro-scroll {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #fdf6e3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 2em;
+  animation: fadeIn 4s ease-in-out;
+}
+
+.scroll-text {
+  font-size: 1.1em;
+  font-style: italic;
+  color: #5c4a36;
+  padding: 2em;
+  border: 2px dashed #c0b093;
+  background: #fffdf9;
+  border-radius: 12px;
+  max-width: 600px;
+  margin-bottom: 20px;
+  white-space: pre-wrap;
+}
+
+.enter-button {
+  background: #d6d2c4;
+  color: #3a2e1d;
+  font-size: 1em;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.enter-button:hover {
+  background: #e9e6dc;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
